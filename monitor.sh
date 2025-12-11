@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
-# Usage: ./htb-monitor.sh TARGET INTERVAL_SECONDS
-# Example: ./htb-monitor.sh 10.10.11.123 30
+# Usage: ./monitor.sh TARGET INTERVAL_SECONDS
+# Example: ./monitor.sh 10.10.11.123 30
 
 TARGET="${1:-}"
 INTERVAL="${2:-}"
@@ -17,7 +17,7 @@ while true; do
     if ping -c 1 -W 1 "$TARGET" > /dev/null 2>&1; then
         echo "$(date '+%F %T'): $TARGET is online"
     else
-        notify-send "HTB Box Down" "$TARGET seems offline!"
+        notify-send "Box Down" "$TARGET seems offline!"
         echo "$(date '+%F %T'): $TARGET is offline!"
         paplay /usr/share/sounds/freedesktop/stereo/alarm-clock-elapsed.oga 2>/dev/null || true
     fi

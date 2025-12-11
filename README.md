@@ -1,2 +1,132 @@
-# monitor
-monitor of box
+# Network Monitor Script
+
+A simple bash script to monitor network connectivity to a target host with desktop notifications and audio alerts.
+
+## Features
+
+- 🔄 Continuous monitoring with configurable intervals
+- 🔔 Desktop notifications when target goes offline
+- 🔊 Audio alerts for offline events
+- 📝 Timestamped logging of online/offline status
+- ⚡ Lightweight and minimal dependencies
+
+## Requirements
+
+- `bash` - Shell interpreter
+- `ping` - Network connectivity testing
+- `notify-send` - Desktop notifications (libnotify)
+- `paplay` - Audio playback (optional, PulseAudio)
+
+## Installation
+
+1. Clone or download the script:
+```bash
+git clone <repository-url>
+cd monitor
+```
+
+2. Make the script executable:
+```bash
+chmod +x monitor.sh
+```
+
+## Usage
+
+```bash
+./monitor.sh TARGET INTERVAL_SECONDS
+```
+
+### Parameters
+
+- **TARGET** - IP address or hostname to monitor
+- **INTERVAL_SECONDS** - Time between checks (in seconds)
+
+### Examples
+
+Monitor a HackTheBox machine every 30 seconds:
+```bash
+./monitor.sh 10.10.11.123 30
+```
+
+Monitor a local server every 10 seconds:
+```bash
+./monitor.sh 192.168.1.100 10
+```
+
+Monitor a domain every minute:
+```bash
+./monitor.sh example.com 60
+```
+
+## How It Works
+
+1. The script pings the target host once per interval
+2. If the host responds, it logs the online status
+3. If the host doesn't respond:
+   - Sends a desktop notification
+   - Logs the offline status with timestamp
+   - Plays an alarm sound (if available)
+4. Repeats indefinitely until stopped (Ctrl+C)
+
+## Output Example
+
+```
+Monitoring 10.10.11.123 every 30 seconds...
+2025-12-11 19:38:00: 10.10.11.123 is online
+2025-12-11 19:38:30: 10.10.11.123 is online
+2025-12-11 19:39:00: 10.10.11.123 is offline!
+2025-12-11 19:39:30: 10.10.11.123 is online
+```
+
+## Use Cases
+
+- **CTF/HackTheBox**: Monitor when a box resets or goes down
+- **Server Monitoring**: Track uptime of critical services
+- **Network Troubleshooting**: Detect intermittent connectivity issues
+- **Development**: Monitor when local services restart
+
+## Stopping the Monitor
+
+Press `Ctrl+C` to stop the monitoring script.
+
+## Troubleshooting
+
+### No desktop notifications
+Install libnotify:
+```bash
+# Debian/Ubuntu
+sudo apt install libnotify-bin
+
+# Arch Linux
+sudo pacman -S libnotify
+
+# Fedora
+sudo dnf install libnotify
+```
+
+### No audio alerts
+Install PulseAudio:
+```bash
+# Debian/Ubuntu
+sudo apt install pulseaudio-utils
+
+# Arch Linux
+sudo pacman -S pulseaudio
+
+# Fedora
+sudo dnf install pulseaudio-utils
+```
+
+### Permission denied
+Make sure the script is executable:
+```bash
+chmod +x monitor.sh
+```
+
+## License
+
+Free to use and modify as needed.
+
+## Author
+
+Created for network monitoring and CTF/penetration testing scenarios.
