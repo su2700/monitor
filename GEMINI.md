@@ -17,9 +17,13 @@ A lightweight Bash-based network monitoring tool designed to track host availabi
 
 ### Running the Monitor
 
-The script requires a target and an interval in seconds, with an optional log file.
+The script can be run directly or as a global command if symlinked to the path (e.g., `~/.local/bin/monitor`).
 
 ```bash
+# As a global command
+monitor <TARGET> <INTERVAL> [LOG_FILE]
+
+# As a local script
 ./monitor.sh <TARGET> <INTERVAL> [LOG_FILE]
 ```
 

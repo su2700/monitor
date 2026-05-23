@@ -34,13 +34,22 @@ git clone <repository-url>
 cd monitor
 ```
 
-2. Make the script executable:
+2. Make the script executable and add it to your path:
 ```bash
 chmod +x monitor.sh
+mkdir -p ~/.local/bin
+ln -s "$(pwd)/monitor.sh" ~/.local/bin/monitor
 ```
+*(Ensure `~/.local/bin` is in your `$PATH`)*
 
 ## Usage
 
+If installed globally:
+```bash
+monitor TARGET INTERVAL_SECONDS [LOG_FILE]
+```
+
+Otherwise:
 ```bash
 ./monitor.sh TARGET INTERVAL_SECONDS [LOG_FILE]
 ```
