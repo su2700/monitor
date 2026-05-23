@@ -46,18 +46,18 @@ ln -s "$(pwd)/monitor.sh" ~/.local/bin/monitor
 
 If installed globally:
 ```bash
-monitor TARGET INTERVAL_SECONDS [LOG_FILE]
+monitor TARGET [INTERVAL_SECONDS] [LOG_FILE]
 ```
 
 Otherwise:
 ```bash
-./monitor.sh TARGET INTERVAL_SECONDS [LOG_FILE]
+./monitor.sh TARGET [INTERVAL_SECONDS] [LOG_FILE]
 ```
 
 ### Parameters
 
 - **TARGET** - IP address or hostname to monitor
-- **INTERVAL_SECONDS** - Time between checks (in seconds)
+- **INTERVAL_SECONDS** - (Optional) Time between checks in seconds (Default: 30)
 - **LOG_FILE** - (Optional) Path to a file where status changes will be logged
 
 ### Examples
@@ -74,14 +74,21 @@ Monitor a local server every 10 seconds and log to `uptime.log`:
 
 ## How It Works
 
-1. The script pings the target host once per interval.
-2. It tracks the state of the host.
-3. **If the state changes** (e.g., from Online to Offline):
-   - Sends a desktop notification.
-   - Logs the status with a timestamp to console (and optionally a file).
-   - Plays an alarm sound if the host went offline.
-4. If the state remains the same, it continues monitoring silently to avoid notification spam.
-5. Repeats indefinitely until stopped (Ctrl+C).
+The script automatically detects the best connectivity check method based on the target format:
+
+1.  **HTTP/HTTPS**: If the target starts with `http://` or `https://`, it uses `curl`.
+2.  **TCP Port**: If the target includes a port (e.g., `10.10.10.10:22`), it uses `nc` (netcat).
+3.  **IP/Hostname**: If only an IP or hostname is provided:
+    -   It first attempts an **ICMP Ping**.
+    -   If the ping fails (e.g., ICMP is blocked), it **falls back** to checking common ports (22, 80, 443, 445, 3389).
+    -   The host is only declared "Offline" if all methods fail.
+
+The script tracks the state of the host and:
+-   **If the state changes** (e.g., from Online to Offline):
+    -   Sends a desktop notification.
+    -   Logs the status with a timestamp to console (and optionally a file).
+    -   Plays an alarm sound if the host went offline.
+-   If the state remains the same, it continues monitoring silently to avoid notification spam.
 
 ## Output Example
 
