@@ -5,17 +5,26 @@ A simple bash script to monitor network connectivity to a target host with deskt
 ## Features
 
 - 🔄 Continuous monitoring with configurable intervals
-- 🔔 Desktop notifications when target goes offline
+- 🔔 Desktop notifications on status change (Online ↔ Offline)
 - 🔊 Audio alerts for offline events
-- 📝 Timestamped logging of online/offline status
-- ⚡ Lightweight and minimal dependencies
+- 📝 Optional timestamped logging to a file
+- 🍎 Cross-platform support (Linux & macOS)
+- ⚡ Lightweight with minimal dependencies
+- 🛡️ Anti-spam: Alerts only trigger when the status actually changes
 
 ## Requirements
 
+### Linux
 - `bash` - Shell interpreter
 - `ping` - Network connectivity testing
 - `notify-send` - Desktop notifications (libnotify)
 - `paplay` - Audio playback (optional, PulseAudio)
+
+### macOS
+- `bash` - Shell interpreter
+- `ping` - Network connectivity testing (built-in)
+- `osascript` - Desktop notifications (built-in)
+- `afplay` - Audio playback (built-in)
 
 ## Installation
 
@@ -33,13 +42,14 @@ chmod +x monitor.sh
 ## Usage
 
 ```bash
-./monitor.sh TARGET INTERVAL_SECONDS
+./monitor.sh TARGET INTERVAL_SECONDS [LOG_FILE]
 ```
 
 ### Parameters
 
 - **TARGET** - IP address or hostname to monitor
 - **INTERVAL_SECONDS** - Time between checks (in seconds)
+- **LOG_FILE** - (Optional) Path to a file where status changes will be logged
 
 ### Examples
 
@@ -48,25 +58,21 @@ Monitor a HackTheBox machine every 30 seconds:
 ./monitor.sh 10.10.11.123 30
 ```
 
-Monitor a local server every 10 seconds:
+Monitor a local server every 10 seconds and log to `uptime.log`:
 ```bash
-./monitor.sh 192.168.1.100 10
-```
-
-Monitor a domain every minute:
-```bash
-./monitor.sh example.com 60
+./monitor.sh 192.168.1.100 10 uptime.log
 ```
 
 ## How It Works
 
-1. The script pings the target host once per interval
-2. If the host responds, it logs the online status
-3. If the host doesn't respond:
-   - Sends a desktop notification
-   - Logs the offline status with timestamp
-   - Plays an alarm sound (if available)
-4. Repeats indefinitely until stopped (Ctrl+C)
+1. The script pings the target host once per interval.
+2. It tracks the state of the host.
+3. **If the state changes** (e.g., from Online to Offline):
+   - Sends a desktop notification.
+   - Logs the status with a timestamp to console (and optionally a file).
+   - Plays an alarm sound if the host went offline.
+4. If the state remains the same, it continues monitoring silently to avoid notification spam.
+5. Repeats indefinitely until stopped (Ctrl+C).
 
 ## Output Example
 
