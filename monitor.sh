@@ -3,14 +3,14 @@
 # Example: ./monitor.sh 10.10.11.123 30 monitor.log
 
 TARGET="${1:-}"
-INTERVAL="${2:-30}"
+INTERVAL="${2:-60}"
 LOG_FILE="${3:-}"
 
 # Input Validation
 if [[ -z "$TARGET" ]]; then
     echo "Usage: $0 TARGET [INTERVAL_SECONDS] [LOG_FILE]"
     echo "Example: $0 10.10.11.123 30 monitor.log"
-    echo "Default interval is 30 seconds."
+    echo "Default interval is 60 seconds."
     exit 1
 fi
 

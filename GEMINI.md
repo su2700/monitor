@@ -27,7 +27,7 @@ monitor <TARGET> [INTERVAL] [LOG_FILE]
 ./monitor.sh <TARGET> [INTERVAL] [LOG_FILE]
 ```
 
-**Note**: Default interval is 30 seconds.
+**Note**: Default interval is 60 seconds.
 
 **Example:**
 ```bash
